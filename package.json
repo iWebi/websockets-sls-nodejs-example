@@ -1,0 +1,54 @@
+{
+  "name": "websockets-sls-nodejs-example",
+  "version": "1.0.0",
+  "description": "WebSockets Serverless Example",
+  "main": "serverless.ts",
+  "scripts": {
+    "test": "jest",
+    "lint": "tslint -p .",
+    "compile": "tsc",
+    "devfunction": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev -f oddsConnectionsProcessor",
+    "devdeploy": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev",
+    "print": "sls print --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.7.0",
+    "@aws-sdk/client-dynamodb": "^3.679.0",
+    "@aws-sdk/client-lambda": "^3.645.0",
+    "@aws-sdk/client-secrets-manager": "^3.645.0",
+    "@aws-sdk/client-sqs": "^3.679.0",
+    "@aws-sdk/lib-dynamodb": "^3.679.0",
+    "@smithy/middleware-retry": "^3.0.15",
+    "async": "^3.2.6",
+    "aws-xray-sdk": "^3.10.1",
+    "aws-xray-sdk-core": "^3.3.4",
+    "semver": "^7.3.5",
+    "source-map-support": "^0.5.21",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^3.38.0",
+    "@types/aws-lambda": "^8.10.145",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.5.4",
+    "jest": "^29.7.0",
+    "serverless": "^3.39.0",
+    "serverless-api-gateway-execution-log-manager": "^2.0.2",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-prune-plugin": "^2.0.1",
+    "serverless-webpack": "^5.14.2",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.2.7",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^3.13.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
+    "typescript": "^5.5.4",
+    "webpack": "^5.94.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "author": "suman.jakkula",
+  "private": true
+}

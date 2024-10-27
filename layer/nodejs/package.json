@@ -1,0 +1,32 @@
+{
+  "name": "websockets-sls-nodejs-example-lambda-layer",
+  "version": "1.0.0",
+  "description": "WebSockets Serverless Example AWS Lambda Layer",
+  "scripts": {
+    "test": "jest",
+    "lint": "tslint -p .",
+    "compile": "tsc",
+    "devdeploy": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev",
+    "print": "sls print --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.7.0",
+    "@aws-sdk/client-dynamodb": "^3.679.0",
+    "@aws-sdk/client-lambda": "^3.645.0",
+    "@aws-sdk/client-secrets-manager": "^3.645.0",
+    "@aws-sdk/client-sqs": "^3.679.0",
+    "@aws-sdk/lib-dynamodb": "^3.679.0",
+    "@smithy/middleware-retry": "^3.0.15",
+    "async": "^3.2.6",
+    "aws-xray-sdk": "^3.10.1",
+    "aws-xray-sdk-core": "^3.3.4",
+    "semver": "^7.3.5",
+    "source-map-support": "^0.5.21",
+    "ulid": "^2.3.0"
+  },
+  "author": "suman.jakkula",
+  "private": true
+}
