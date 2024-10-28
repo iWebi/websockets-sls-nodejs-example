@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "tslint -p .",
     "compile": "tsc",
-    "devfunction": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev -f oddsConnectionsProcessor",
+    "devfunction": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev -f connectionsProcessor",
     "devdeploy": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev",
     "print": "sls print --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev"
   },

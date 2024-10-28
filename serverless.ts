@@ -24,9 +24,9 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs20.x",
     region: "us-west-2",
-    websocketsApiName: "odds-websockets-api",
+    websocketsApiName: "websockets-connections-api",
     websocketsApiRouteSelectionExpression: "$request.body.action",
-    websocketsDescription: "Example WebSockets API to demo odds streaming",
+    websocketsDescription: "Example WebSockets API to demo websockets connections",
 
     logRetentionInDays: 14,
     logs: {

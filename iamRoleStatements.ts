@@ -1,9 +1,9 @@
 export default [
-  // For lambda to push odds data to SQS
+  // For lambda to push connections data to SQS
   {
     Effect: "Allow",
     Action: "sqs:*",
-    Resource: ["arn:aws:sqs:${aws:region}:*:odds-*"],
+    Resource: ["arn:aws:sqs:${aws:region}:*:connectionids-*"],
   },
   // Table to maintain incoming Websocket connection Ids and user Ids as needed
   {

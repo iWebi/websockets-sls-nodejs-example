@@ -1,4 +1,4 @@
-import { registerClient, unregisterClient } from "@libs/oddsrepository";
+import { registerClient, unregisterClient } from "@libs/connectionsrepository";
 import { successProxyResponse } from "@libs/utils";
 import { APIGatewayEvent } from "aws-lambda";
 
