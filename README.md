@@ -1,72 +1,48 @@
-<!--
-title: 'AWS NodeJS Example'
-description: 'This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Websockets Experiment using AWS API Gateway With Serverless Framework
 
+This example offers a secured websockets API using AWS API Gateway. Connected client Ids are stored in DynamoDB for downstream applications to push messages. Lambda linked to `$connect` route is secured using a custom authorizer lambda. This authorizer expects `Authorization` header from clients attempting to connect.
+It uses a dummy value `_t_o_k_e_n_` for verification purpose. Users can change the logic as needed. For example: authenticate against a JWT provider like Auth0 or Cognito.
 
-# Serverless Framework AWS NodeJS Example
-
-This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).
+Connect will persist ID and disconnect will remove it. Beyond this no additional data is stored in DB.
+To keep it simple, uses a static `ActiveConnections` string as HashKey.
 
 ## Usage
 
 ### Deployment
 
-In order to deploy the example, you need to run the following command:
+In order to deploy the example, you need to run the following:
+
+- AWS IAM User for serverless to deploy. This user should have Full Administrative access to create various resources
+- There are many ways to pass credentials to sls deploy. This example assumes you have a profile in `.aws/credentials` with name `websockets-sls-nodejs-example`.
 
 ```
-$ serverless deploy
+...
+[websockets-sls-nodejs-example]
+aws_access_key_id=AKXXXXXXXXXUW
+aws_secret_access_key=3FXXXXXXfdfdxxxxYYXXEf
+```
+
+Deploy commands:
+
+```
+$ npm run install
+$ npm run devdeploy
 ```
 
 After running deploy, you should see output similar to:
 
 ```bash
-Deploying aws-node-project to stage dev (us-east-1)
+Deploying websockets-sls-nodejs-example-apis to stage dev (us-west-2)
+Warning: API Gateway Execution log group not found, skipping retention policy update
+✔ Pruning of functions complete
 
-✔ Service deployed to stack aws-node-project-dev (112s)
+✔ Service deployed to stack websockets-sls-nodejs-example-apis-dev (51s)
 
+endpoint: wss://xxxxxxxx.execute-api.us-west-2.amazonaws.com/dev
 functions:
-  hello: aws-node-project-dev-hello (1.5 kB)
-```
+  customAuthorizer: customAuthorizer (3.6 kB)
+  connectionsProcessor: connectionsProcessor (10 kB)
+layers:
+  nodejs: arn:aws:lambda:us-west-2:12345678:layer:nodejs:1
 
-### Invocation
-
-After successful deployment, you can invoke the deployed function by using the following command:
-
-```bash
-serverless invoke --function hello
-```
-
-Which should result in response similar to the following:
-
-```json
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": {}\n}"
-}
-```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
 ```
