@@ -17,13 +17,6 @@ export interface BaseEntity extends EntityKey {
   updatedEpoch?: number;
 }
 
-export interface StockCustomerEntity extends BaseEntity {
-  connectionId: string; //also hash key. UniqueId created when UI connects to WebSocket API
-  userId: string; // sort key (also called range key)
-  //... store any other user details here if you use NoSQL DB
-  // otherwise userId is enough to fetch complete details from another table in a Relation DB
-}
-
 export interface DynamoItemResponse<T> {
   body: T;
   statusCode: number;
@@ -56,4 +49,14 @@ export interface PagenatedResponse<T> {
   next: string | undefined;
   direction: PageDirection;
   data: T[];
+}
+
+export enum SQS_NOTIFICATION_TYPE {
+  ADD_CONNECTION_ID = "ADD_CONNECTION_ID",
+  REMOVE_CONNECTION_ID = "REMOVE_CONNECTION_ID",
+}
+
+export interface SqsNotification {
+  type: SQS_NOTIFICATION_TYPE;
+  data: string;
 }

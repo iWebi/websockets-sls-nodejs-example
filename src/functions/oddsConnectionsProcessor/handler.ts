@@ -3,7 +3,6 @@ import { successProxyResponse } from "@libs/utils";
 import { APIGatewayEvent } from "aws-lambda";
 
 exports.handler = async (event: APIGatewayEvent) => {
-  console.log("handling ", event);
   const { requestContext } = event;
   const connectionId = requestContext.connectionId;
   const routeKey = requestContext.routeKey;

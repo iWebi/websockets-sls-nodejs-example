@@ -38,16 +38,6 @@ export function badRequestWith(message?: string): AppError {
     statusType: "Bad Request",
   };
 }
-
-export function isAppError(error: any): boolean {
-  return (
-    typeof error === "object" &&
-    error.hasOwnProperty("body") &&
-    error.hasOwnProperty("statusCode") &&
-    error.hasOwnProperty("statusType")
-  );
-}
-
 export function notFoundResponse(message?: string): DynamoItemResponse<string> {
   return {
     body: message ?? "",
@@ -70,18 +60,6 @@ export function internalServerErrorWith(message?: string): AppError {
     statusCode: 500,
     statusType: "Internal Server Error",
   };
-}
-
-export function errorProxyResponse(error: AppError): APIGatewayProxyResult {
-  return {
-    body: JSON.stringify(error),
-    headers: DEFAULT_RESPONSE_HEADERS,
-    statusCode: error.statusCode,
-  };
-}
-
-export function badRequestProxyResponse(message?: string): APIGatewayProxyResult {
-  return errorProxyResponse(badRequestWith(message));
 }
 
 export function removeDynamoAttributes(entity: Partial<BaseEntity> | Array<Partial<BaseEntity>>) {

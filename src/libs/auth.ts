@@ -23,7 +23,7 @@ export function findHeader(headerName: string, headers: APIGatewayProxyEventHead
 }
 
 export function generatePolicy(methodArn: string) {
-  const policy = {
+  return {
     principalId: "fooUser",
     policyDocument: {
       Version: "2012-10-17",
@@ -36,6 +36,4 @@ export function generatePolicy(methodArn: string) {
       ],
     },
   };
-  console.log("policy to return is ", JSON.stringify(policy, null, 2));
-  return policy;
 }
