@@ -1,10 +1,9 @@
 # Websockets Experiment using AWS API Gateway With Serverless Framework
 
-This example offers a secured websockets API using AWS API Gateway. Connected client Ids are stored in DynamoDB for downstream applications to push messages. Lambda linked to `$connect` route is secured using a custom authorizer lambda. This authorizer expects `Authorization` header from clients attempting to connect.
+This example offers a secured websockets API using AWS API Gateway. Lambda linked to `$connect` route is secured using a custom authorizer lambda. This authorizer expects `Authorization` header from clients attempting to connect.
 It uses a dummy value `_t_o_k_e_n_` for verification purpose. Users can change the logic as needed. For example: authenticate against a JWT provider like Auth0 or Cognito.
 
-Connect will persist ID and disconnect will remove it. Beyond this no additional data is stored in DB.
-To keep it simple, uses a static `ActiveConnections` string as HashKey.
+Connect will push the connectId to the SQS for downstream applications to push data.
 
 ## Usage
 

@@ -1,6 +1,5 @@
-import { registerClient, unregisterClient } from "@libs/connectionsrepository";
-import { successProxyResponse } from "@libs/utils";
-import { APIGatewayEvent } from "aws-lambda";
+import { sendNewConnectionIdMessage } from "@libs/sqs";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 exports.handler = async (event: APIGatewayEvent) => {
   const { requestContext } = event;
@@ -8,12 +7,25 @@ exports.handler = async (event: APIGatewayEvent) => {
   const routeKey = requestContext.routeKey;
 
   if (routeKey === "$connect") {
-    await registerClient(connectionId);
+    // Push the new active connection id to SQS for asynchronous lambda to start pumping data
+    await sendNewConnectionIdMessage(connectionId);
     return successProxyResponse();
   }
 
   if (routeKey === "$disconnect") {
-    await unregisterClient(connectionId);
+    // Dummy for now. Implement cleanup features, if any
     return successProxyResponse();
   }
 };
+
+function successProxyResponse(data?: any, statusCode?: number): APIGatewayProxyResult {
+  return {
+    body: data ? JSON.stringify(data) : "",
+    statusCode: statusCode ?? 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    isBase64Encoded: false,
+  };
+}

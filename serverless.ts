@@ -20,6 +20,7 @@ const serverlessConfiguration: AWS = {
     // offline (local) related
     // ...offlinepluginconfig,
   },
+  useDotenv: true,
   provider: {
     name: "aws",
     runtime: "nodejs20.x",
@@ -42,6 +43,8 @@ const serverlessConfiguration: AWS = {
       ACCOUNT_ID: "${aws:accountId}",
       STAGE: "${opt:stage}",
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      WEBSOCKETS_CONNECTIONS_API: "${env:WEBSOCKETS_CONNECTIONS_API}",
+      STREAMING_API_URL: "${env:STREAMING_API_URL}",
     },
     iamRoleStatements,
     tracing: {

@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "tslint -p .",
     "compile": "tsc",
-    "devfunction": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev -f connectionsProcessor",
+    "devfunction": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev -f oddsPublisher",
     "devdeploy": "sls deploy --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev",
     "print": "sls print --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev"
   },
@@ -16,11 +16,10 @@
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.7.0",
-    "@aws-sdk/client-dynamodb": "^3.679.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.682.0",
     "@aws-sdk/client-lambda": "^3.645.0",
     "@aws-sdk/client-secrets-manager": "^3.645.0",
     "@aws-sdk/client-sqs": "^3.679.0",
-    "@aws-sdk/lib-dynamodb": "^3.679.0",
     "@smithy/middleware-retry": "^3.0.15",
     "async": "^3.2.6",
     "aws-xray-sdk": "^3.10.1",

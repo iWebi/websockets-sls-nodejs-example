@@ -7,6 +7,5 @@ export default [
   // offline (local) related
   // "serverless-offline-elasticmq",
   // "serverless-offline-sqs",
-  // "serverless-dynamodb-local",
   // "serverless-offline",
 ];

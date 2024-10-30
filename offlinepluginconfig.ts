@@ -1,15 +1,4 @@
 export default {
-  dynamodb: {
-    stages: ["local"],
-    start: {
-      port: 8000,
-      inMemory: true,
-      migrate: true,
-      seed: true,
-      // If you are run DynamoDB in docker, you can enable noStart to prevent another instance of DynamoDB
-      noStart: true,
-    },
-  },
   elasticmq: {
     stages: ["local"],
     start: {
