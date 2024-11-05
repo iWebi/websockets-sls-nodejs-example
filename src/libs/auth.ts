@@ -4,7 +4,6 @@ export async function authorize(event: APIGatewayRequestAuthorizerEvent) {
   const authToken = findHeader("Authorization", event.headers);
   // TODO: add custom auth logic here such as JWT validation against Cognito
   // dummy logic for demo purpose
-  console.log("attempting to authorize using token", event);
   if (authToken === "_t_o_k_e_n_") {
     return generatePolicy(event.methodArn);
   }

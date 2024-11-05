@@ -10,7 +10,7 @@
     "print": "sls print --aws-profile=websockets-sls-nodejs-example --region us-west-2 --stage dev"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.7.0",

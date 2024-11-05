@@ -10,7 +10,6 @@ export default {
         route: "$connect",
         authorizer: {
           name: "customAuthorizer",
-          type: "request",
           identitySource: "route.request.header.authorization",
         },
       },

@@ -45,3 +45,55 @@ layers:
   nodejs: arn:aws:lambda:us-west-2:12345678:layer:nodejs:1
 
 ```
+
+### offline support
+
+[serverless offline plugin configuration](./offlinepluginconfig.ts) includes support for SQS.
+
+To test this repository in serverless offline mode, you need
+
+- Run [ElasticMQ](https://github.com/softwaremill/elasticmq) in local machine. Docker is preferable otion.
+
+```
+docker run --name elasticmq -d -p 9324:9324 -p 9325:9325 softwaremill/elasticmq-native
+```
+
+- update `STREAMING_API_URL` environment variable in [.env.local](./.env.local) file to refer to valid URL
+- Starting offline mode `npm run offline`. You should see output similar to below
+
+```bash
+
+~#npm run offline
+
+> websockets-sls-nodejs-example@1.0.0 offline
+> sls offline start --stage local --reloadHandler
+
+ElasticMq Offline - [noStart] options is true. Will not start.
+Starting Offline SQS at stage local (us-west-2)
+
+Starting Offline at stage local (us-west-2)
+
+Offline [http for lambda] listening on http://localhost:3002
+Function names exposed for local invocation by aws-sdk:
+           * customAuthorizer: customAuthorizer
+           * connectionsProcessor: connectionsProcessor
+           * oddsPublisher: oddsPublisher
+Configuring Authorization: connectionsProcessor customAuthorizer
+route '$connect (λ: connectionsProcessor)'
+route '$disconnect (λ: connectionsProcessor)'
+Offline [websocket] listening on ws://localhost:3001
+Offline [http for websocket] listening on http://localhost:3001
+
+⠙ [Webpack] Watch service...
+
+```
+
+- Connecting to local websocket should start streaming data
+
+```
+# wscat -c ws://localhost:3001 -H 'Authorization: _t_o_k_e_n_'
+Connected (press CTRL+C to quit)
+< event: connected
+retry: 5000
+data: ok go
+```

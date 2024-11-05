@@ -1,6 +1,7 @@
 import type { AWS } from "@serverless/typescript";
 import functions from "./functions";
 import iamRoleStatements from "./iamRoleStatements";
+import offlinepluginconfig from "./offlinepluginconfig";
 import plugins from "./plugins";
 import resources from "./resources";
 
@@ -18,12 +19,12 @@ const serverlessConfiguration: AWS = {
     },
     useDocker: true,
     // offline (local) related
-    // ...offlinepluginconfig,
+    ...offlinepluginconfig,
   },
   useDotenv: true,
   provider: {
     name: "aws",
-    runtime: "nodejs20.x",
+    runtime: "nodejs18.x",
     region: "us-west-2",
     websocketsApiName: "websockets-connections-api",
     websocketsApiRouteSelectionExpression: "$request.body.action",
@@ -40,7 +41,7 @@ const serverlessConfiguration: AWS = {
       },
     },
     environment: {
-      ACCOUNT_ID: "${aws:accountId}",
+      ACCOUNT_ID: "${env:ACCOUNT_ID}",
       STAGE: "${opt:stage}",
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       WEBSOCKETS_CONNECTIONS_API: "${env:WEBSOCKETS_CONNECTIONS_API}",
@@ -60,7 +61,7 @@ const serverlessConfiguration: AWS = {
       name: "nodejs",
       path: "layer",
       description: "API NodeJS dependencies with aws-sdk v3",
-      compatibleRuntimes: ["nodejs20.x"],
+      compatibleRuntimes: ["nodejs18.x"],
     },
   },
   plugins,

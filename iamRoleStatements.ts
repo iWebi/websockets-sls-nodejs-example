@@ -3,6 +3,6 @@ export default [
   {
     Effect: "Allow",
     Action: "sqs:*",
-    Resource: ["arn:aws:sqs:${aws:region}:*:connectionids-*"],
+    Resource: ["arn:aws:sqs:*:*:connectionids-*"],
   },
 ];
