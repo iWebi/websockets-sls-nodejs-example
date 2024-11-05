@@ -1,11 +1,4 @@
 export default {
-  elasticmq: {
-    stages: ["local"],
-    start: {
-      port: 9324,
-      // noStart: true,
-    },
-  },
   "serverless-offline-sqs": {
     autoCreate: true,
     apiVersion: "2012-11-05",

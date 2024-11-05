@@ -5,7 +5,6 @@ export default [
   "serverless-prune-plugin",
 
   // offline (local) related
-   "serverless-offline-elasticmq",
-   "serverless-offline-sqs",
-   "serverless-offline",
+  "serverless-offline-sqs",
+  "serverless-offline",
 ];
