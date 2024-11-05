@@ -15,10 +15,10 @@ exports.handler = async (event: SQSEvent) => {
   await deleteMessage(event.Records[0].receiptHandle);
   const connectionId = notification.data;
   try {
-    console.log(`attempting to publish odds data to connectionId ${connectionId}`);
     await procesStreamChunks(connectionId);
   } catch (err) {
-    // TODO: ignoring all errors for now. Ideally InactiveClientError alone should be ignored
+    // TODO: ignoring all errors for now. ideally errors are caught inside procesStreamChunks while handling request
+    // this top level try-catch probably redundant
   }
 };
 
@@ -27,22 +27,31 @@ async function procesStreamChunks(connectionId: string) {
     endpoint: process.env.WEBSOCKETS_CONNECTIONS_API,
   });
   const url = new URL(process.env.STREAMING_API_URL!);
+  const controller = new AbortController();
   return new Promise((resolve, reject) => {
-    const req = http.request(url, (res) => {
+    const req = http.request(url, { signal: controller.signal }, (res) => {
       res.on("data", async (chunk) => {
-        // TODO: decode chunk. split new lines and consider the line with data string and JSON.parse its value
-        await sendChunkToClient(apiClient, chunk.toString(), connectionId);
+        try {
+          console.log("sending chunk to client ", connectionId);
+          await sendChunkToClient(apiClient, chunk.toString(), connectionId);
+        } catch (err) {
+          console.error(`Stopping streaming to client ${connectionId} due to `, err);
+          controller.abort();
+        }
       });
 
       res.on("end", () => {
-        console.log("Response completed");
         resolve("completed");
       });
     });
 
     req.on("error", (error) => {
-      console.error("Error:", error);
-      reject(error);
+      if (error.name === "AbortError") {
+        // Ignore abort error. it could be client got disconnected
+        resolve("aborted");
+      } else {
+        reject(error);
+      }
     });
 
     req.end();
@@ -63,7 +72,7 @@ async function sendChunkToClient(apiClient: ApiGatewayManagementApiClient, paylo
   try {
     await apiClient.send(new PostToConnectionCommand(postData));
   } catch (err) {
-    console.error("Failed to send chunks to connection id", connectionId, err);
+    console.error("Failed to send chunks to connection id ", connectionId, err);
     // TODO: Check if its GoneError
     // perhaps connection is no longer valid
     throw new InactiveClientError("Failed to send chunks to connection id" + connectionId);
