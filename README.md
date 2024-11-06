@@ -58,6 +58,14 @@ To test this repository in serverless offline mode, you need
 docker run --name elasticmq -d -p 9324:9324 -p 9325:9325 softwaremill/elasticmq-native
 ```
 
+OR to remove the container on exit:
+
+```
+docker run --name elasticmq --rm -p 9324:9324 -p 9325:9325 softwaremill/elasticmq-native
+```
+
+Open http://localhost:9325 to view ElasticMQ Web interface
+
 - update `STREAMING_API_URL` environment variable in [.env.local](./.env.local) file to refer to valid URL
 - Starting offline mode `npm run offline`. You should see output similar to below
 
