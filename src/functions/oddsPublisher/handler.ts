@@ -28,16 +28,60 @@ async function procesStreamChunks(connectionId: string) {
   });
   const url = new URL(process.env.STREAMING_API_URL!);
   const controller = new AbortController();
+
+  const sanitizeLines = (lines: string[]) => {
+    // valid data lines contain atleast one string with double quotes
+    return lines.filter((line) => line.length > 0 && line.includes('"')).map((line) => line.replace(/^data: /, ""));
+  };
+
+  const attemptPublish = async (line: string) => {
+    try {
+      // console.log("sending chunk to client ", connectionId);
+      await sendChunkToClient(apiClient, line, connectionId);
+    } catch (err) {
+      console.error(`Stopping streaming to client ${connectionId} due to `, err);
+      clearInterval(publishInterval);
+      controller.abort();
+    }
+  };
+  let queue: string[] = [];
+
+  let partialData = "";
+  let beginData = false;
+  const publishInterval = setInterval(async () => {
+    for (let i = 0; i < queue.length; i++) {
+      let line: string = queue.shift();
+      // console.error("line is " + line);
+      if (line.startsWith("data: {")) {
+        beginData = true;
+      }
+      if (beginData) {
+        line = line.replace(/^data: /, "");
+        // if there is any partial data from previous iterations
+        line = partialData + line;
+        try {
+          JSON.parse(line);
+          // at this point, its valid json
+          partialData = "";
+          beginData = false;
+        } catch (err) {
+          partialData = line;
+        }
+        if (partialData === "" && line.length > 0) {
+          await attemptPublish(line);
+        }
+      }
+    }
+  }, 100);
+
   return new Promise((resolve, reject) => {
     const req = http.request(url, { signal: controller.signal }, (res) => {
       res.on("data", async (chunk) => {
-        try {
-          console.log("sending chunk to client ", connectionId);
-          await sendChunkToClient(apiClient, chunk.toString(), connectionId);
-        } catch (err) {
-          console.error(`Stopping streaming to client ${connectionId} due to `, err);
-          controller.abort();
-        }
+        let lines = chunk
+          .toString()
+          .split("\n")
+          .filter((l: string) => l.length > 0);
+        queue.push(...lines);
       });
 
       res.on("end", () => {
